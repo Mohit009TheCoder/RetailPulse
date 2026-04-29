@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Customer Segmentation Dashboard</h1>
+        <p class="page-subtitle">RFM Analysis - Recency, Frequency, Monetary Value</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="total-customers">-</h3>
+                <p class="stat-label">Total Customers</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="total-segments">-</h3>
+                <p class="stat-label">Customer Segments</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="avg-monetary">-</h3>
+                <p class="stat-label">Avg Monetary Value</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="champions-count">-</h3>
+                <p class="stat-label">Champions</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <div class="card-header">
+                <h2 class="card-title">Segment Distribution</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="segmentChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="card-header">
+                <h2 class="card-title">Customer Segments</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="segmentBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="card-header">
+            <h2 class="card-title">Segment Summary</h2>
+            <button class="btn btn-primary" onclick="refreshData()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                Refresh
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table" id="segmentTable">
+                    <thead>
+                        <tr>
+                            <th>Segment</th>
+                            <th>Customer Count</th>
+                            <th>Avg Recency (days)</th>
+                            <th>Avg Frequency</th>
+                            <th>Avg Monetary ($)</th>
+                            <th>Avg RFM Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="segmentTableBody">
+                        <tr>
+                            <td colspan="6" class="text-center">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

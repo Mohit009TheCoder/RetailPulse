@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Customers - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Customer Details</h1>
+        <p class="page-subtitle">Search and filter customers by segment or ID</p>
+    </div>
+
+    <div class="filter-card">
+        <div class="filter-group">
+            <label for="segmentFilter">Filter by Segment</label>
+            <select id="segmentFilter" class="form-select" onchange="filterCustomers()">
+                <option value="">All Segments</option>
+                <option value="Champions">Champions</option>
+                <option value="Loyal Customers">Loyal Customers</option>
+                <option value="Potential Loyalists">Potential Loyalists</option>
+                <option value="New Customers">New Customers</option>
+                <option value="Promising">Promising</option>
+                <option value="Need Attention">Need Attention</option>
+                <option value="At Risk">At Risk</option>
+                <option value="Can't Lose Them">Can't Lose Them</option>
+                <option value="Hibernating">Hibernating</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="customerSearch">Search by Customer ID</label>
+            <input type="text" id="customerSearch" class="form-input" placeholder="Enter Customer ID">
+        </div>
+
+        <div class="filter-actions">
+            <button class="btn btn-primary" onclick="searchCustomer()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                Search
+            </button>
+            <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="card-header">
+            <h2 class="card-title">Customer List <span id="customerCount" class="badge">0</span></h2>
+            <button class="btn btn-primary" onclick="exportData()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Export
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table" id="customersTable">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Segment</th>
+                            <th>Recency (days)</th>
+                            <th>Frequency</th>
+                            <th>Monetary ($)</th>
+                            <th>R Score</th>
+                            <th>F Score</th>
+                            <th>M Score</th>
+                            <th>RFM Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTableBody">
+                        <tr>
+                            <td colspan="9" class="text-center">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/customers.js') }}"></script>
+{% endblock %}

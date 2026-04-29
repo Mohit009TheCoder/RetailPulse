@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}About - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">About RFM Analysis</h1>
+        <p class="page-subtitle">Understanding customer segmentation through RFM methodology</p>
+    </div>
+
+    <div class="about-content">
+        <div class="info-card">
+            <h2>What is RFM Analysis?</h2>
+            <p>RFM (Recency, Frequency, Monetary) analysis is a marketing technique used to quantitatively rank and group customers based on the recency, frequency, and monetary value of their recent transactions to identify the best customers and perform targeted marketing campaigns.</p>
+        </div>
+
+        <div class="rfm-metrics">
+            <div class="metric-card">
+                <div class="metric-icon recency">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3>Recency</h3>
+                <p>How recently a customer has made a purchase. Customers who purchased recently are more likely to purchase again.</p>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon frequency">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                </div>
+                <h3>Frequency</h3>
+                <p>How often a customer makes a purchase. Customers who purchase frequently are more engaged with your business.</p>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon monetary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <h3>Monetary</h3>
+                <p>How much money a customer spends. Customers who spend more are more valuable to your business.</p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h2>Customer Segments</h2>
+            <div class="segments-info">
+                <div class="segment-info">
+                    <h4>Champions</h4>
+                    <p>Best customers who bought recently, buy often and spend the most. Reward them and make them advocates.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>Loyal Customers</h4>
+                    <p>Customers who buy regularly with good monetary value. Upsell higher value products and engage them.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>Potential Loyalists</h4>
+                    <p>Recent customers with average frequency. Offer membership or loyalty programs.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>New Customers</h4>
+                    <p>Recent buyers with low frequency. Provide onboarding support and build relationships.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>Promising</h4>
+                    <p>Recent buyers with good potential. Create brand awareness and offer free trials.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>Need Attention</h4>
+                    <p>Below average customers. Make limited time offers and recommend products.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>At Risk</h4>
+                    <p>Previously frequent buyers who haven't purchased recently. Send personalized reactivation campaigns.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>Can't Lose Them</h4>
+                    <p>High value customers who haven't purchased recently. Win them back with renewals and helpful products.</p>
+                </div>
+                <div class="segment-info">
+                    <h4>Hibernating</h4>
+                    <p>Inactive customers with low engagement. Recreate brand value and offer relevant products.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h2>How to Use This System</h2>
+            <ol class="usage-steps">
+                <li><strong>Dashboard:</strong> View overall statistics and segment distribution</li>
+                <li><strong>Segments:</strong> Explore detailed information about each customer segment</li>
+                <li><strong>Customers:</strong> Search and filter individual customers by segment or ID</li>
+                <li><strong>Export:</strong> Download customer data for further analysis</li>
+            </ol>
+        </div>
+
+        <div class="info-card">
+            <h2>Scoring System</h2>
+            <p>Each customer receives a score from 1-5 for Recency, Frequency, and Monetary metrics:</p>
+            <ul class="scoring-list">
+                <li><strong>5:</strong> Best (most recent, most frequent, highest spending)</li>
+                <li><strong>4:</strong> Very Good</li>
+                <li><strong>3:</strong> Good</li>
+                <li><strong>2:</strong> Fair</li>
+                <li><strong>1:</strong> Needs Improvement</li>
+            </ul>
+            <p>The RFM Score is the sum of these three scores, ranging from 3 to 15.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

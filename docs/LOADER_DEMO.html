@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailPulse Loader Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --border: #e5e7eb;
+            --text: #374151;
+            --text-light: #6b7280;
+            --light: #f9fafb;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .demo-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .code-block {
+            background: #f3f4f6;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #1f2937;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Page Loader Styles */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .page-loader.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .loader-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        .loader-logo-icon {
+            width: 60px;
+            height: 60px;
+            stroke-width: 2;
+            color: var(--primary);
+            animation: spin 2s linear infinite;
+        }
+
+        .loader-logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .loader-spinner {
+            position: relative;
+            width: 50px;
+            height: 50px;
+        }
+
+        .loader-spinner::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 500;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            z-index: 9998;
+            width: 0%;
+        }
+
+        .loading-bar.active {
+            width: 90%;
+            animation: loadingBarAnimation 1.5s ease-in-out;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes loadingBarAnimation {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 90%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-box strong {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <svg class="loader-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span class="loader-logo-text">RetailPulse</span>
+            </div>
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <div class="container">
+        <h1>🚀 RetailPulse Page Loader Demo</h1>
+        <p class="description">
+            Experience the professional page loader with RetailPulse branding. 
+            Click the buttons below to see the loader in action.
+        </p>
+
+        <!-- Demo Section 1 -->
+        <div class="demo-section">
+            <h2>📊 Loader Demonstrations</h2>
+            <div class="button-group">
+                <button onclick="showLoader(2000)">Show for 2 seconds</button>
+                <button onclick="showLoader(4000)">Show for 4 seconds</button>
+                <button onclick="showLoader(6000)">Show for 6 seconds</button>
+            </div>
+            <div class="info-box">
+                <strong>💡 Tip:</strong> Click any button to see the loader in action. 
+                The loader will automatically hide after the specified time.
+            </div>
+        </div>
+
+        <!-- Demo Section 2 -->
+        <div class="demo-section">
+            <h2>✨ Features</h2>
+            <ul class="feature-list">
+                <li>RetailPulse logo with spinning animation</li>
+                <li>Rotating spinner circle</li>
+                <li>Pulsing "Loading..." text</li>
+                <li>Gradient progress bar at top</li>
+                <li>Smooth fade-in/fade-out transitions</li>
+                <li>Automatic navigation detection</li>
+                <li>Works with page transitions</li>
+                <li>Works with AJAX API calls</li>
+                <li>Cross-browser compatible</li>
+                <li>Mobile-friendly design</li>
+            </ul>
+        </div>
+
+        <!-- Demo Section 3 -->
+        <div class="demo-section">
+            <h2>💻 Usage Examples</h2>
+            
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">Show Loader</h3>
+            <div class="code-block">pageLoader.show();</div>
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">Hide Loader</h3>
+            <div class="code-block">pageLoader.hide();</div>
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">API Call with Loader</h3>
+            <div class="code-block">const data = await apiCall('/api/endpoint');</div>
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">Manual Control</h3>
+            <div class="code-block">
+pageLoader.show();
+setTimeout(() => pageLoader.hide(), 3000);
+            </div>
+        </div>
+
+        <!-- Demo Section 4 -->
+        <div class="demo-section">
+            <h2>🎨 Customization</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-light);">
+                The loader can be easily customized by modifying CSS variables and animation durations.
+            </p>
+            
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">Change Colors</h3>
+            <div class="code-block">
+:root {
+    --primary: #6366f1; /* Change this */
+}
+            </div>
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">Change Animation Speed</h3>
+            <div class="code-block">
+.loader-logo-icon {
+    animation: spin 3s linear infinite; /* Slower */
+}
+            </div>
+
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--text);">Change Size</h3>
+            <div class="code-block">
+.loader-logo-icon {
+    width: 80px;
+    height: 80px;
+}
+            </div>
+        </div>
+
+        <!-- Demo Section 5 -->
+        <div class="demo-section">
+            <h2>📱 Responsive Design</h2>
+            <p style="color: var(--text-light);">
+                The loader is fully responsive and works perfectly on:
+            </p>
+            <ul class="feature-list">
+                <li>Desktop browsers (Chrome, Firefox, Safari, Edge)</li>
+                <li>Tablets (iPad, Android tablets)</li>
+                <li>Mobile phones (iPhone, Android phones)</li>
+                <li>All modern screen sizes</li>
+            </ul>
+        </div>
+
+        <!-- Demo Section 6 -->
+        <div class="demo-section">
+            <h2>🔧 Technical Details</h2>
+            <ul class="feature-list">
+                <li>Pure CSS animations (GPU accelerated)</li>
+                <li>No external dependencies</li>
+                <li>Minimal JavaScript overhead</li>
+                <li>Z-index: 9999 (highest priority)</li>
+                <li>Fixed positioning overlay</li>
+                <li>Smooth transitions (0.3s)</li>
+                <li>Automatic event handling</li>
+                <li>Memory efficient</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Page Loader Management
+        class PageLoader {
+            constructor() {
+                this.loader = document.getElementById('pageLoader');
+                this.loadingBar = document.getElementById('loadingBar');
+                this.isLoading = false;
+            }
+
+            show() {
+                if (this.loader) {
+                    this.loader.classList.add('active');
+                    this.isLoading = true;
+                }
+                if (this.loadingBar) {
+                    this.loadingBar.classList.add('active');
+                }
+            }
+
+            hide() {
+                if (this.loader) {
+                    this.loader.classList.remove('active');
+                    this.isLoading = false;
+                }
+                if (this.loadingBar) {
+                    this.loadingBar.classList.remove('active');
+                }
+            }
+        }
+
+        // Initialize loader
+        const pageLoader = new PageLoader();
+
+        // Demo function
+        function showLoader(duration) {
+            pageLoader.show();
+            setTimeout(() => pageLoader.hide(), duration);
+        }
+    </script>
+</body>
+</html>

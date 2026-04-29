@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}Demand Forecasting - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Demand Forecasting</h1>
+        <p class="page-subtitle">Predict future sales using multiple forecasting models</p>
+    </div>
+
+    <!-- Historical Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="avg-daily-revenue">-</h3>
+                <p class="stat-label">Avg Daily Revenue</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <polyline points="17 11 19 13 23 9"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="avg-daily-quantity">-</h3>
+                <p class="stat-label">Avg Daily Quantity</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="avg-daily-orders">-</h3>
+                <p class="stat-label">Avg Daily Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="total-days">-</h3>
+                <p class="stat-label">Days of Data</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forecast Controls -->
+    <div class="forecast-controls">
+        <div class="control-group">
+            <label for="forecastPeriods">Forecast Period (Days)</label>
+            <select id="forecastPeriods" class="form-select">
+                <option value="7">7 Days</option>
+                <option value="14">14 Days</option>
+                <option value="30" selected>30 Days</option>
+                <option value="60">60 Days</option>
+                <option value="90">90 Days</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="generateForecast()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            Generate Forecast
+        </button>
+    </div>
+
+    <!-- Forecast Charts -->
+    <div class="charts-grid">
+        <div class="chart-card full-width">
+            <div class="card-header">
+                <h2 class="card-title">Historical Sales & Forecast</h2>
+                <div class="chart-legend" id="chartLegend"></div>
+            </div>
+            <div class="card-body">
+                <canvas id="forecastChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forecast Methods Comparison -->
+    <div class="table-card">
+        <div class="card-header">
+            <h2 class="card-title">Forecast Methods Comparison</h2>
+            <button class="btn btn-secondary" onclick="showAccuracy()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                View Accuracy
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table" id="forecastTable">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Avg Daily Forecast</th>
+                            <th>Total Forecast</th>
+                            <th>Min Forecast</th>
+                            <th>Max Forecast</th>
+                        </tr>
+                    </thead>
+                    <tbody id="forecastTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">Click "Generate Forecast" to see predictions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Products -->
+    <div class="table-card">
+        <div class="card-header">
+            <h2 class="card-title">Top Products by Revenue</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table" id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Product</th>
+                            <th>Total Quantity</th>
+                            <th>Total Revenue</th>
+                            <th>Total Orders</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">Loading products...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accuracy Modal -->
+    <div id="accuracyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Forecast Accuracy Metrics</h2>
+                <button class="modal-close" onclick="closeAccuracyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description">Accuracy metrics calculated on the last 30 days of historical data</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>MAE</th>
+                            <th>RMSE</th>
+                            <th>MAPE (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accuracyTableBody">
+                        <tr>
+                            <td colspan="4" class="text-center">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="metric-info">
+                    <p><strong>MAE</strong> (Mean Absolute Error): Average absolute difference between predicted and actual values. Lower is better.</p>
+                    <p><strong>RMSE</strong> (Root Mean Square Error): Square root of average squared differences. Lower is better.</p>
+                    <p><strong>MAPE</strong> (Mean Absolute Percentage Error): Average percentage error. Lower is better.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/forecasting.js') }}"></script>
+{% endblock %}

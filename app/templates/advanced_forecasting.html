@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}AI-Powered Forecasting - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">🤖 AI-Powered Demand Forecasting</h1>
+        <p class="page-subtitle">Advanced ensemble model with confidence intervals and actionable recommendations</p>
+    </div>
+
+    <!-- Forecast Controls -->
+    <div class="forecast-controls">
+        <div class="control-group">
+            <label for="advancedForecastPeriods">Forecast Period (Days)</label>
+            <select id="advancedForecastPeriods" class="form-select">
+                <option value="7">7 Days (1 Week)</option>
+                <option value="14">14 Days (2 Weeks)</option>
+                <option value="30" selected>30 Days (1 Month)</option>
+                <option value="60">60 Days (2 Months)</option>
+                <option value="90">90 Days (3 Months)</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="generateAdvancedForecast()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+            Generate AI Forecast
+        </button>
+    </div>
+
+    <!-- Forecast Summary Cards -->
+    <div class="stats-grid" id="forecastSummary" style="display: none;">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="avgDailyForecast">-</h3>
+                <p class="stat-label">Avg Daily Forecast</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="trendDirection">-</h3>
+                <p class="stat-label">Trend Direction</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="totalForecast">-</h3>
+                <p class="stat-label">Total Period Forecast</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3 class="stat-value" id="confidenceRange">-</h3>
+                <p class="stat-label">Confidence Range</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="recommendations-section" id="recommendationsSection" style="display: none;">
+        <h2 class="section-title">📋 Business Recommendations</h2>
+        <div class="recommendations-grid" id="recommendationsGrid">
+            <!-- Recommendations will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Forecast Chart -->
+    <div class="chart-card" id="forecastChartCard" style="display: none;">
+        <div class="card-header">
+            <h2 class="card-title">Forecast with Confidence Intervals</h2>
+            <div class="chart-info">
+                <span class="info-badge">Shaded area = 95% confidence interval</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="advancedForecastChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Inventory Recommendations -->
+    <div class="table-card" id="inventoryCard" style="display: none;">
+        <div class="card-header">
+            <h2 class="card-title">📦 Inventory Management Recommendations</h2>
+        </div>
+        <div class="card-body">
+            <div class="inventory-grid">
+                <div class="inventory-item">
+                    <div class="inventory-label">Average Daily Demand</div>
+                    <div class="inventory-value" id="invAvgDemand">-</div>
+                </div>
+                <div class="inventory-item">
+                    <div class="inventory-label">Maximum Daily Demand</div>
+                    <div class="inventory-value" id="invMaxDemand">-</div>
+                </div>
+                <div class="inventory-item">
+                    <div class="inventory-label">Safety Stock</div>
+                    <div class="inventory-value" id="invSafetyStock">-</div>
+                </div>
+                <div class="inventory-item">
+                    <div class="inventory-label">Reorder Point</div>
+                    <div class="inventory-value" id="invReorderPoint">-</div>
+                </div>
+                <div class="inventory-item">
+                    <div class="inventory-label">Recommended Order Quantity</div>
+                    <div class="inventory-value highlight" id="invOrderQty">-</div>
+                </div>
+                <div class="inventory-item">
+                    <div class="inventory-label">Lead Time (Days)</div>
+                    <div class="inventory-value" id="invLeadTime">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Forecast Table -->
+    <div class="table-card" id="dailyForecastCard" style="display: none;">
+        <div class="card-header">
+            <h2 class="card-title">Day-by-Day Forecast</h2>
+            <button class="btn btn-secondary" onclick="exportDailyForecast()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Export
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table" id="dailyForecastTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Day</th>
+                            <th>Week</th>
+                            <th>Forecast</th>
+                            <th>Lower Bound</th>
+                            <th>Upper Bound</th>
+                            <th>Range</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyForecastBody">
+                        <tr>
+                            <td colspan="7" class="text-center">Generate forecast to see daily predictions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/advanced_forecasting.js') }}"></script>
+{% endblock %}

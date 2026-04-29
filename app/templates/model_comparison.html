@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Model Comparison - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-brain"></i> ML Model Comparison & Tuning</h1>
+        <p>Compare baseline and tuned machine learning models for churn prediction</p>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-chart-bar"></i> Comparison Summary</h2>
+        </div>
+        <div class="card-body">
+            <div id="summary-content" class="summary-grid">
+                <div class="loading">Loading summary...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Baseline Models Comparison -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-chart-line"></i> Baseline Models Performance</h2>
+            <p>Standard models without hyperparameter tuning</p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="baseline-table" class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Accuracy</th>
+                            <th>Precision</th>
+                            <th>Recall</th>
+                            <th>F1 Score</th>
+                            <th>ROC-AUC</th>
+                            <th>Specificity</th>
+                            <th>CV Mean</th>
+                        </tr>
+                    </thead>
+                    <tbody id="baseline-body">
+                        <tr><td colspan="8" class="loading">Loading baseline models...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tuned Models Comparison -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-cogs"></i> Tuned Models Performance</h2>
+            <p>Models with optimized hyperparameters</p>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="tuned-table" class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Accuracy</th>
+                            <th>Precision</th>
+                            <th>Recall</th>
+                            <th>F1 Score</th>
+                            <th>ROC-AUC</th>
+                            <th>Specificity</th>
+                            <th>Best Parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tuned-body">
+                        <tr><td colspan="8" class="loading">Loading tuned models...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Metrics Comparison Chart -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-chart-area"></i> Metrics Comparison Chart</h2>
+        </div>
+        <div class="card-body">
+            <canvas id="metricsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Feature Importance -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-star"></i> Feature Importance Analysis</h2>
+            <div class="filter-group">
+                <select id="model-selector" class="form-control">
+                    <option value="xgboost">XGBoost</option>
+                    <option value="random_forest">Random Forest</option>
+                    <option value="gradient_boosting">Gradient Boosting</option>
+                </select>
+                <input type="number" id="top-n" class="form-control" value="15" min="5" max="30" placeholder="Top N features">
+                <button class="btn btn-primary" onclick="loadFeatureImportance()"><i class="fas fa-sync"></i> Load Features</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="featureImportanceChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Confusion Matrices -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-th"></i> Confusion Matrices</h2>
+        </div>
+        <div class="card-body">
+            <div id="confusion-matrices" class="confusion-grid">
+                <div class="loading">Loading confusion matrices...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROC Curves -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-curve"></i> ROC Curves Comparison</h2>
+        </div>
+        <div class="card-body">
+            <canvas id="rocCurvesChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/model_comparison.js') }}"></script>
+{% endblock %}

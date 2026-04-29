@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Segments - RetailPulse{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Customer Segments</h1>
+        <p class="page-subtitle">Detailed analysis of each customer segment</p>
+    </div>
+
+    <div class="segments-grid" id="segmentsGrid">
+        <div class="segment-card champions">
+            <div class="segment-header">
+                <h3>Champions</h3>
+                <span class="segment-badge" id="champions-badge">0</span>
+            </div>
+            <p class="segment-description">Best customers who bought recently, buy often and spend the most</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="champions-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="champions-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="champions-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Champions')">View Customers</button>
+        </div>
+
+        <div class="segment-card loyal">
+            <div class="segment-header">
+                <h3>Loyal Customers</h3>
+                <span class="segment-badge" id="loyal-badge">0</span>
+            </div>
+            <p class="segment-description">Customers who buy regularly with good monetary value</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="loyal-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="loyal-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="loyal-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Loyal Customers')">View Customers</button>
+        </div>
+
+        <div class="segment-card potential">
+            <div class="segment-header">
+                <h3>Potential Loyalists</h3>
+                <span class="segment-badge" id="potential-badge">0</span>
+            </div>
+            <p class="segment-description">Recent customers with potential to become loyal</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="potential-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="potential-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="potential-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Potential Loyalists')">View Customers</button>
+        </div>
+
+        <div class="segment-card new">
+            <div class="segment-header">
+                <h3>New Customers</h3>
+                <span class="segment-badge" id="new-badge">0</span>
+            </div>
+            <p class="segment-description">Recent buyers with low purchase frequency</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="new-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="new-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="new-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('New Customers')">View Customers</button>
+        </div>
+
+        <div class="segment-card promising">
+            <div class="segment-header">
+                <h3>Promising</h3>
+                <span class="segment-badge" id="promising-badge">0</span>
+            </div>
+            <p class="segment-description">Recent buyers with good potential</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="promising-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="promising-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="promising-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Promising')">View Customers</button>
+        </div>
+
+        <div class="segment-card attention">
+            <div class="segment-header">
+                <h3>Need Attention</h3>
+                <span class="segment-badge" id="attention-badge">0</span>
+            </div>
+            <p class="segment-description">Below average customers who need engagement</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="attention-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="attention-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="attention-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Need Attention')">View Customers</button>
+        </div>
+
+        <div class="segment-card risk">
+            <div class="segment-header">
+                <h3>At Risk</h3>
+                <span class="segment-badge" id="risk-badge">0</span>
+            </div>
+            <p class="segment-description">Previously frequent buyers who haven't purchased recently</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="risk-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="risk-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="risk-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('At Risk')">View Customers</button>
+        </div>
+
+        <div class="segment-card cantlose">
+            <div class="segment-header">
+                <h3>Can't Lose Them</h3>
+                <span class="segment-badge" id="cantlose-badge">0</span>
+            </div>
+            <p class="segment-description">High value customers who haven't purchased recently</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="cantlose-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="cantlose-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="cantlose-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Can\\'t Lose Them')">View Customers</button>
+        </div>
+
+        <div class="segment-card hibernating">
+            <div class="segment-header">
+                <h3>Hibernating</h3>
+                <span class="segment-badge" id="hibernating-badge">0</span>
+            </div>
+            <p class="segment-description">Inactive customers with low engagement</p>
+            <div class="segment-stats">
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Recency</span>
+                    <span class="stat-value" id="hibernating-recency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Frequency</span>
+                    <span class="stat-value" id="hibernating-frequency">-</span>
+                </div>
+                <div class="segment-stat">
+                    <span class="stat-label">Avg Monetary</span>
+                    <span class="stat-value" id="hibernating-monetary">-</span>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="viewSegmentCustomers('Hibernating')">View Customers</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/segments.js') }}"></script>
+{% endblock %}
